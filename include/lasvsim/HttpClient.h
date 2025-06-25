@@ -13,7 +13,7 @@ namespace Lasvsim {
          * 构造函数
          * @param httpConfig HTTP配置(超时、认证等)
          */
-        HttpClient(std::shared_ptr<HttpConfig> httpConfig);
+        HttpClient(std::shared_ptr<HttpConfig> httpConfig,std::map<std::string, std::string>& headers);
         
         virtual ~HttpClient() = default;
         
@@ -52,7 +52,7 @@ namespace Lasvsim {
     // 基于cURL的具体实现
     class CurlHttpClient : public HttpClient {
     public:
-        CurlHttpClient(std::shared_ptr<HttpConfig> config);
+        CurlHttpClient(std::shared_ptr<HttpConfig> config,std::map<std::string, std::string>& headers);
         ~CurlHttpClient() override;
         
         std::string SendRequest(

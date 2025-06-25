@@ -8,12 +8,15 @@ namespace Lasvsim {
 
 
     HttpClient::HttpClient(
-        std::shared_ptr<HttpConfig> config
+        std::shared_ptr<HttpConfig> config,std::map<std::string, std::string>& headers
     ) : config_(std::move(config)){
         if (!config_) {
             throw std::invalid_argument("HttpConfig cannot be null");
         }
-        defaultHeaders_ = std::map<std::string, std::string>();
+
+        // auto my = headers;
+
+        defaultHeaders_ = headers;
         // if (defaultHeaders_.empty()) {
         //     // 如果没有提供默认头，则初始化一个空的map
         //     defaultHeaders_ = std::map<std::string, std::string>();
@@ -34,8 +37,8 @@ namespace Lasvsim {
     }
 
 
-    CurlHttpClient::CurlHttpClient(std::shared_ptr<HttpConfig> config)
-        : HttpClient(config) {
+    CurlHttpClient::CurlHttpClient(std::shared_ptr<HttpConfig> config,std::map<std::string, std::string>& headers)
+        : HttpClient(config,headers) {
         curl_global_init(CURL_GLOBAL_ALL);
     }
 

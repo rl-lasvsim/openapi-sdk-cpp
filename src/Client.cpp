@@ -6,13 +6,14 @@
 namespace Lasvsim {
 
 Client::Client(std::shared_ptr<HttpConfig> httpConfig)
-    : httpConfig(httpConfig),
-      httpClient(std::make_shared<CurlHttpClient>(httpConfig)),
-      processTask(httpClient)  // 正确初始化
-{
+    : httpConfig(httpConfig){
     if (!httpConfig) {
         throw std::invalid_argument("HttpConfig cannot be null");
     }
+
+    auto aaa = std::map<std::string, std::string>();
+    httpClient = std::make_shared<CurlHttpClient>(httpConfig,aaa);
+    processTask = std::make_shared<ProcessTask>(httpClient);
 }
 
 void Client::initCommonClient() {
@@ -23,7 +24,7 @@ void Client::initCommonClient() {
     }
 }
 
-ProcessTask Client::getProcessTask() {
+std::shared_ptr<ProcessTask>&  Client::getProcessTask() {
     return processTask;
 }
 

@@ -27,11 +27,11 @@ class Client {
          * 获取处理任务
          * @return ProcessTask 对象
          */
-        ProcessTask getProcessTask();
+        std::shared_ptr<ProcessTask>& getProcessTask();
 
     private:
-        std::shared_ptr<HttpClient> httpClient;
-        ProcessTask processTask;
         std::shared_ptr<HttpConfig> httpConfig;
+        std::shared_ptr<HttpClient> httpClient;
+        std::shared_ptr<ProcessTask> processTask;
 };
 }
