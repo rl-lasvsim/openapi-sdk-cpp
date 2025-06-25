@@ -8,35 +8,34 @@ namespace Lasvsim {
 
 
     HttpClient::HttpClient(
-        std::shared_ptr<HttpConfig> config,
-        std::map<std::string, std::string>& headers
-    ) : config_(std::move(config)),defaultHeaders_(headers){
+        std::shared_ptr<HttpConfig> config
+    ) : config_(std::move(config)){
         if (!config_) {
             throw std::invalid_argument("HttpConfig cannot be null");
         }
-        
-        if (defaultHeaders_.empty()) {
-            // 如果没有提供默认头，则初始化一个空的map
-            defaultHeaders_ = std::map<std::string, std::string>();
-        }
+        defaultHeaders_ = std::map<std::string, std::string>();
+        // if (defaultHeaders_.empty()) {
+        //     // 如果没有提供默认头，则初始化一个空的map
+        //     defaultHeaders_ = std::map<std::string, std::string>();
+        // }
 
-        // Add necessary default headers (without overriding custom ones)
-        if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->GetToken().empty()) {
-            defaultHeaders_["Authorization"] = "Bearer " + config_->GetToken();
-        }
+        // // Add necessary default headers (without overriding custom ones)
+        // if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->getToken().empty()) {
+        //     defaultHeaders_["Authorization"] = "Bearer " + config_->getToken();
+        // }
         
-        if (defaultHeaders_.find("Content-Type") == defaultHeaders_.end()) {
-            defaultHeaders_["Content-Type"] = "application/json";
-        }
+        // if (defaultHeaders_.find("Content-Type") == defaultHeaders_.end()) {
+        //     defaultHeaders_["Content-Type"] = "application/json";
+        // }
         
-        if (defaultHeaders_.find("Connection") == defaultHeaders_.end()) {
-            defaultHeaders_["Connection"] = "keep-alive";
-        }
+        // if (defaultHeaders_.find("Connection") == defaultHeaders_.end()) {
+        //     defaultHeaders_["Connection"] = "keep-alive";
+        // }
     }
 
 
-    CurlHttpClient::CurlHttpClient(std::shared_ptr<HttpConfig> config,std::map<std::string, std::string>& headers)
-        : HttpClient(config,headers) {
+    CurlHttpClient::CurlHttpClient(std::shared_ptr<HttpConfig> config)
+        : HttpClient(config) {
         curl_global_init(CURL_GLOBAL_ALL);
     }
 
@@ -91,7 +90,7 @@ namespace Lasvsim {
         // 如果url以/开头，则添加默认的baseUrl
         std::string fullUrl = url;
         if (fullUrl.front() == '/') {
-            fullUrl = config_->GetEndpoint() + fullUrl;
+            fullUrl = config_->getEndpoint() + fullUrl;
         }
         
         try {

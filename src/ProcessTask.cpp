@@ -37,16 +37,13 @@ CopyRecordRes ProcessTask::copyRecord(int taskId, int recordId) {
         std::string response = httpClient_->Post("/openapi/process_task/v2/record/copy", jsonStr);
         
         // 解析响应
-        json j = json::parse(response);
-        if (j.contains("error")) {
-            throw std::runtime_error("API error: " + j["error"].get<std::string>());
-        }
+        json jRes = json::parse(response);
 
         CopyRecordRes res;
-        res.newRecordId = j["new_record_id"];
-        res.simRecordId = j["sim_record_id"];
-        res.scenId = j["scen_id"];
-        res.scenVer = j["scen_ver"];
+        res.newRecordId = jRes["new_record_id"];
+        res.simRecordId = jRes["sim_record_id"];
+        res.scenId = jRes["scen_id"];
+        res.scenVer = jRes["scen_ver"];
 
         return res;
     } catch (const std::exception& e) {

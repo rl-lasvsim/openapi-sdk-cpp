@@ -3,6 +3,14 @@
 #include "lasvsim/HttpClient.h"
 
 namespace Lasvsim {
+    class CopyRecordRes {
+    public:
+        std::string simRecordId;
+        std::string scenId;
+        std::string scenVer;
+        int newRecordId;
+    };
+
     class ProcessTask {
     public:
         ProcessTask(std::shared_ptr<HttpClient> httpClient);
@@ -12,13 +20,5 @@ namespace Lasvsim {
 
     private:
         std::shared_ptr<HttpClient> httpClient_;
-    };
-
-    class CopyRecordRes {
-    public:
-        std::string simRecordId;
-        std::string scenId;
-        std::string scenVer;
-        int newRecordId;
     };
 }
