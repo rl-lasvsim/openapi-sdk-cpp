@@ -19,18 +19,18 @@ namespace Lasvsim {
         //     defaultHeaders_ = std::map<std::string, std::string>();
         // }
 
-        // // Add necessary default headers (without overriding custom ones)
-        // if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->getToken().empty()) {
-        //     defaultHeaders_["Authorization"] = "Bearer " + config_->getToken();
-        // }
+        // Add necessary default headers (without overriding custom ones)
+        if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->getToken().empty()) {
+            defaultHeaders_["Authorization"] = "Bearer " + config_->getToken();
+        }
         
-        // if (defaultHeaders_.find("Content-Type") == defaultHeaders_.end()) {
-        //     defaultHeaders_["Content-Type"] = "application/json";
-        // }
+        if (defaultHeaders_.find("Content-Type") == defaultHeaders_.end()) {
+            defaultHeaders_["Content-Type"] = "application/json";
+        }
         
-        // if (defaultHeaders_.find("Connection") == defaultHeaders_.end()) {
-        //     defaultHeaders_["Connection"] = "keep-alive";
-        // }
+        if (defaultHeaders_.find("Connection") == defaultHeaders_.end()) {
+            defaultHeaders_["Connection"] = "keep-alive";
+        }
     }
 
 

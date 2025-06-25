@@ -8,7 +8,7 @@ int main() {
     try {
         // 1. 创建配置 (替换为你的实际API信息)
         auto config = std::make_shared<Lasvsim::HttpConfig>(
-            "https://api.example.com",  // 替换为实际baseUrl
+            "http://api.example.com",  // 替换为实际baseUrl
             "your_api_token_here"      // 替换为实际token
         );
 
