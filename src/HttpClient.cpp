@@ -1,8 +1,12 @@
 #include "lasvsim/HttpClient.h"
+#include "lasvsim/Error.h"
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
 #include <curl/curl.h>
+#include <nlohmann/json.hpp> // 需要集成JSON库
+
+using json = nlohmann::json;
 
 namespace lasvsim {
 
@@ -119,7 +123,22 @@ namespace lasvsim {
             long httpCode = 0;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
             if (httpCode != 200) {
-                throw std::runtime_error("HTTP error " + std::to_string(httpCode) + ": " + response);
+                /**
+                           try:
+                error_data = ujson.loads(response.data)
+            except Exception as e:
+                error_data = {"message": f'client parse json error:{e},data:{response.data}'}
+
+            reason = error_data.get('reason') if isinstance(error_data, dict) else None
+            raise APIError(
+                status_code=response.status,
+                message=error_data.get('message'),
+                reason=reason,
+            )
+                 */
+
+                json error_json = json::parse(response);
+                throw SDKException(httpCode, error_json["message"], error_json["reason"],fullUrl);
             }
             
         } catch (...) {

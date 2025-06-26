@@ -19,6 +19,8 @@ CopyRecordRes ProcessTask::CopyRecord(int taskId, int recordId) {
         throw std::invalid_argument("Invalid taskId or recordId");
     }
     
+    std::string path = "/openapi/process_task/v2/record/copy";
+
     try {
 
         // 构建json 字符串
@@ -28,7 +30,7 @@ CopyRecordRes ProcessTask::CopyRecord(int taskId, int recordId) {
         std::string jsonStr = reqJson.dump();
 
         // // 发送POST请求(空body)
-        std::string response = http_client_->Post("/openapi/process_task/v2/record/copy", jsonStr);
+        std::string response = http_client_->Post(path, jsonStr);
         
         // 解析响应
         json resJson = json::parse(response);
@@ -40,8 +42,11 @@ CopyRecordRes ProcessTask::CopyRecord(int taskId, int recordId) {
         res.scen_ver = resJson["scen_ver"];
 
         return res;
-    } catch (const std::exception& e) {
-        throw std::runtime_error("Copy record failed: " + std::string(e.what()));
+    } catch(const SDKException& e){
+        throw e;
+    }
+    catch (const std::exception& e) {
+        throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
     }
 }
 
