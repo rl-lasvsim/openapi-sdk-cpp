@@ -3,7 +3,7 @@
 #include <memory>
 #include "lasvsim/HttpClient.h"
 
-namespace Lasvsim {
+namespace lasvsim {
     class SimulatorConfig {
 
     public:

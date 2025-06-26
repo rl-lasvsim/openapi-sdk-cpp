@@ -7,7 +7,7 @@
 #include "lasvsim/ProcessTask.h"
 #include "lasvsim/Simulator.h"
 
-namespace Lasvsim {
+namespace lasvsim {
     class Client {
         public:
             /**
@@ -17,12 +17,6 @@ namespace Lasvsim {
             Client(std::shared_ptr<HttpConfig> httpConfig);
             
             virtual ~Client() = default;
-            
-            /**
-             * 初始化通用客户端
-             * @throws std::runtime_error 初始化失败时抛出
-             */
-            void initCommonClient();
             
             /**
              * 获取处理任务

@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-namespace Lasvsim { 
+namespace lasvsim { 
     Simulator::Simulator(std::shared_ptr<HttpClient> client,
                        const std::shared_ptr<SimulatorConfig>& config)
         : config_(config) {

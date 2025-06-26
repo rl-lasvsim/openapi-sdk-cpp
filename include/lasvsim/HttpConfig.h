@@ -2,7 +2,7 @@
 #include <string>
 #include <memory>
 
-namespace Lasvsim {
+namespace lasvsim {
     class HttpConfig {
     public:
         HttpConfig(const std::string& endpoint, 

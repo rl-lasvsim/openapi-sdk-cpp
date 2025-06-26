@@ -4,7 +4,7 @@
 #include <sstream>
 #include <curl/curl.h>
 
-namespace Lasvsim {
+namespace lasvsim {
 
 
     HttpClient::HttpClient(

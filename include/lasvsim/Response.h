@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 
-namespace Lasvsim {
+namespace lasvsim {
     struct Response {
         int statusCode;
         std::map<std::string, std::string> headers;

@@ -2,7 +2,7 @@
 #pragma once
 #include "lasvsim/HttpClient.h"
 
-namespace Lasvsim {
+namespace lasvsim {
     class CopyRecordRes {
     public:
         std::string simRecordId;

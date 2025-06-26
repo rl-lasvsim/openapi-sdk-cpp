@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace Lasvsim {
+namespace lasvsim {
     // 错误码枚举
     enum class ErrorCode {
         OK = 0,

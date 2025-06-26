@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 
-namespace Lasvsim {
+namespace lasvsim {
     struct Request {
         std::string method;
         std::string path;

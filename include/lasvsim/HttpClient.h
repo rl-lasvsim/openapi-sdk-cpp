@@ -6,7 +6,7 @@
 #include "lasvsim/HttpConfig.h"
 #include <curl/curl.h>
 
-namespace Lasvsim {
+namespace lasvsim {
     class HttpClient {
     public:
         /**

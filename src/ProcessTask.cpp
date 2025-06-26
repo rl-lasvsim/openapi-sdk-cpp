@@ -5,7 +5,7 @@
 
 using json = nlohmann::json;
 
-namespace Lasvsim {
+namespace lasvsim {
 
 ProcessTask::ProcessTask(std::shared_ptr<HttpClient> httpClient) 
     : httpClient_(httpClient) {

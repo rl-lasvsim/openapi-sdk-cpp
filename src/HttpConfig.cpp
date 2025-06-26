@@ -1,6 +1,6 @@
 #include "lasvsim/HttpConfig.h"
 
-namespace Lasvsim {
+namespace lasvsim {
     HttpConfig::HttpConfig(const std::string& endpoint, const std::string& token)
         : endpoint_(endpoint), token_(token) {
         if (endpoint_.empty()) {
