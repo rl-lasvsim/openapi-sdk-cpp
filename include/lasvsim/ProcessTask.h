@@ -5,10 +5,10 @@
 namespace lasvsim {
     class CopyRecordRes {
     public:
-        std::string simRecordId;
-        std::string scenId;
-        std::string scenVer;
-        int newRecordId;
+        std::string sim_record_id;
+        std::string scen_id;
+        std::string scen_ver;
+        int new_record_id;
     };
 
     class ProcessTask {
@@ -19,6 +19,6 @@ namespace lasvsim {
         CopyRecordRes CopyRecord(int taskId, int recordId);
 
     private:
-        std::shared_ptr<HttpClient> httpClient_;
+        std::shared_ptr<HttpClient> http_client_;
     };
 }

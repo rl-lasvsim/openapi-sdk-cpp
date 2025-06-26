@@ -30,8 +30,8 @@ namespace lasvsim {
              */
             Simulator InitSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simConfig);
         private:
-            std::shared_ptr<HttpConfig> httpConfig;
-            std::shared_ptr<HttpClient> httpClient;
-            std::shared_ptr<ProcessTask> processTask;
+            std::shared_ptr<HttpConfig> http_config_;
+            std::shared_ptr<HttpClient> http_client_;
+            std::shared_ptr<ProcessTask> process_task_;
     };
 }

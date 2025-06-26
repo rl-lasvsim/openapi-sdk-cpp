@@ -14,23 +14,23 @@ namespace lasvsim {
             throw std::invalid_argument("HttpConfig cannot be null");
         }
 
-        defaultHeaders_ = headers;
-        if (defaultHeaders_.empty()) {
+        default_headers_ = headers;
+        if (default_headers_.empty()) {
             // 如果没有提供默认头，则初始化一个空的map
-            defaultHeaders_ = std::map<std::string, std::string>();
+            default_headers_ = std::map<std::string, std::string>();
         }
 
         // Add necessary default headers (without overriding custom ones)
-        if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->GetToken().empty()) {
-            defaultHeaders_["Authorization"] = "Bearer " + config_->GetToken();
+        if (default_headers_.find("Authorization") == default_headers_.end() && !config_->GetToken().empty()) {
+            default_headers_["Authorization"] = "Bearer " + config_->GetToken();
         }
         
-        if (defaultHeaders_.find("Content-Type") == defaultHeaders_.end()) {
-            defaultHeaders_["Content-Type"] = "application/json";
+        if (default_headers_.find("Content-Type") == default_headers_.end()) {
+            default_headers_["Content-Type"] = "application/json";
         }
         
-        if (defaultHeaders_.find("Connection") == defaultHeaders_.end()) {
-            defaultHeaders_["Connection"] = "keep-alive";
+        if (default_headers_.find("Connection") == default_headers_.end()) {
+            default_headers_["Connection"] = "keep-alive";
         }
     }
 
@@ -67,8 +67,8 @@ namespace lasvsim {
             headerList = curl_slist_append(headerList, (key + ": " + value).c_str());
         }
         
-        if (!defaultHeaders_.empty()) {
-            for (const auto& [key, value] : defaultHeaders_) {
+        if (!default_headers_.empty()) {
+            for (const auto& [key, value] : default_headers_) {
                 headerList = curl_slist_append(headerList, (key + ": " + value).c_str());
             }
         }
@@ -132,6 +132,6 @@ namespace lasvsim {
     }
 
     HttpClient* CurlHttpClient::Clone() {
-        return new CurlHttpClient(config_, defaultHeaders_);
+        return new CurlHttpClient(config_, default_headers_);
     }
 } // namespace Lasvsim

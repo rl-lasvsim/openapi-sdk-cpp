@@ -37,4 +37,15 @@ namespace lasvsim {
         reqJson["simulation_id"] = simulation_id_;
         client_->Post("/openapi/cosim/v2/simulation/stop", reqJson.dump());
     }
+
+    lasvsim::StepRes Simulator::Step(){ 
+        json reqJson;
+        reqJson["simulation_id"] = simulation_id_;
+        std::string reply = client_->Post("/openapi/cosim/v2/simulation/step", reqJson.dump());
+        json replyJson = json::parse(reply);
+
+        StepRes res(replyJson["code"],replyJson["message"]);
+
+        return res;
+    }
 }

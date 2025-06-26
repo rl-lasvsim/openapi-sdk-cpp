@@ -6,14 +6,14 @@
 namespace lasvsim {
 
 Client::Client(std::shared_ptr<HttpConfig> httpConfig)
-    : httpConfig(httpConfig){
+    : http_config_(httpConfig){
     if (!httpConfig) {
         throw std::invalid_argument("HttpConfig cannot be null");
     }
 
     auto headers = std::map<std::string, std::string>();
-    httpClient = std::make_shared<CurlHttpClient>(httpConfig,headers);
-    processTask = std::make_shared<ProcessTask>(httpClient);
+    http_client_ = std::make_shared<CurlHttpClient>(httpConfig,headers);
+    process_task_ = std::make_shared<ProcessTask>(http_client_);
 }
 
 Simulator Client::InitSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simConfig) {
@@ -21,11 +21,11 @@ Simulator Client::InitSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simCo
         throw std::invalid_argument("SimulatorConfig cannot be null");
     }
     
-    return Simulator(httpClient, simConfig);
+    return Simulator(http_client_, simConfig);
 }
 
 std::shared_ptr<ProcessTask>&  Client::GetProcessTask() {
-    return processTask;
+    return process_task_;
 }
 
 } // namespace Lasvsim

@@ -47,12 +47,12 @@ namespace lasvsim {
         virtual HttpClient* Clone() = 0;
 
         void AddHeader(const std::string& key, const std::string& value) {
-            defaultHeaders_[key] = value;
+            default_headers_[key] = value;
         }
 
     protected:
         std::shared_ptr<HttpConfig> config_;
-        std::map<std::string, std::string> defaultHeaders_;
+        std::map<std::string, std::string> default_headers_;
     };
 
     // 基于cURL的具体实现

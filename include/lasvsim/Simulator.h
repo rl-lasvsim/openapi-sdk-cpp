@@ -16,6 +16,19 @@ namespace lasvsim {
             : scenId(scenId), scenVer(scenVer), simRecordId(simRecordId), maxStep(maxStep) {}
     };
 
+    enum class StepCode {
+        RUNNING = 0,
+        FINISHED = 1001,
+        FAILED = 1002
+    };
+
+    class StepRes {
+    public:
+        StepCode code;
+        std::string message;
+        StepRes(StepCode code, std::string message) : code(code), message(message) {}
+    };
+
     class Simulator {
     public:
         Simulator(std::shared_ptr<HttpClient> client,
@@ -23,6 +36,7 @@ namespace lasvsim {
         virtual ~Simulator() = default;
 
         void Stop();
+        StepRes Step();
     private:
         std::shared_ptr<HttpClient> client_;
         std::shared_ptr<SimulatorConfig> config_;

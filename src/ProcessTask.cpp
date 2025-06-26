@@ -8,8 +8,8 @@ using json = nlohmann::json;
 namespace lasvsim {
 
 ProcessTask::ProcessTask(std::shared_ptr<HttpClient> httpClient) 
-    : httpClient_(httpClient) {
-    if (!httpClient_) {
+    : http_client_(httpClient) {
+    if (!http_client_) {
         throw std::invalid_argument("HttpClient cannot be null");
     }
 }
@@ -28,16 +28,16 @@ CopyRecordRes ProcessTask::CopyRecord(int taskId, int recordId) {
         std::string jsonStr = reqJson.dump();
 
         // // 发送POST请求(空body)
-        std::string response = httpClient_->Post("/openapi/process_task/v2/record/copy", jsonStr);
+        std::string response = http_client_->Post("/openapi/process_task/v2/record/copy", jsonStr);
         
         // 解析响应
         json resJson = json::parse(response);
 
         CopyRecordRes res;
-        res.newRecordId = resJson["new_record_id"];
-        res.simRecordId = resJson["sim_record_id"];
-        res.scenId = resJson["scen_id"];
-        res.scenVer = resJson["scen_ver"];
+        res.new_record_id = resJson["new_record_id"];
+        res.sim_record_id = resJson["sim_record_id"];
+        res.scen_id = resJson["scen_id"];
+        res.scen_ver = resJson["scen_ver"];
 
         return res;
     } catch (const std::exception& e) {
