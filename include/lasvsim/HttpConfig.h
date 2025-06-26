@@ -9,8 +9,8 @@ namespace lasvsim {
                const std::string& token);
         
         // 基础配置
-        const std::string& getEndpoint() const { return endpoint_; }
-        const std::string& getToken() const { return token_; }
+        const std::string& GetEndpoint() const { return endpoint_; }
+        const std::string& GetToken() const { return token_; }
         
         // SSL验证
         // void SetVerifySSL(bool verify) { verifySSL_ = verify; }

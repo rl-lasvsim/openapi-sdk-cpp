@@ -21,8 +21,8 @@ namespace lasvsim {
         }
 
         // Add necessary default headers (without overriding custom ones)
-        if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->getToken().empty()) {
-            defaultHeaders_["Authorization"] = "Bearer " + config_->getToken();
+        if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->GetToken().empty()) {
+            defaultHeaders_["Authorization"] = "Bearer " + config_->GetToken();
         }
         
         if (defaultHeaders_.find("Content-Type") == defaultHeaders_.end()) {
@@ -91,7 +91,7 @@ namespace lasvsim {
         // 如果url以/开头，则添加默认的baseUrl
         std::string fullUrl = url;
         if (fullUrl.front() == '/') {
-            fullUrl = config_->getEndpoint() + fullUrl;
+            fullUrl = config_->GetEndpoint() + fullUrl;
         }
         
         try {
@@ -131,7 +131,7 @@ namespace lasvsim {
         return response;
     }
 
-    HttpClient* CurlHttpClient::clone() {
+    HttpClient* CurlHttpClient::Clone() {
         return new CurlHttpClient(config_, defaultHeaders_);
     }
 } // namespace Lasvsim

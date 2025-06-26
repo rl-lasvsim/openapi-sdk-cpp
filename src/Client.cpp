@@ -16,7 +16,7 @@ Client::Client(std::shared_ptr<HttpConfig> httpConfig)
     processTask = std::make_shared<ProcessTask>(httpClient);
 }
 
-Simulator Client::initSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simConfig) {
+Simulator Client::InitSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simConfig) {
     if (!simConfig) {
         throw std::invalid_argument("SimulatorConfig cannot be null");
     }
@@ -24,7 +24,7 @@ Simulator Client::initSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simCo
     return Simulator(httpClient, simConfig);
 }
 
-std::shared_ptr<ProcessTask>&  Client::getProcessTask() {
+std::shared_ptr<ProcessTask>&  Client::GetProcessTask() {
     return processTask;
 }
 

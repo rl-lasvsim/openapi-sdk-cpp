@@ -22,7 +22,7 @@ namespace lasvsim {
                   const std::shared_ptr<SimulatorConfig>& config);
         virtual ~Simulator() = default;
 
-        void stop();
+        void Stop();
     private:
         std::shared_ptr<HttpClient> client_;
         std::shared_ptr<SimulatorConfig> config_;

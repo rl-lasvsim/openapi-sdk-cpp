@@ -11,7 +11,7 @@ namespace lasvsim {
                        const std::shared_ptr<SimulatorConfig>& config)
         : config_(config) {
 
-        std::shared_ptr<HttpClient> sharedClient(client.get()->clone()); // clone the HttpClient
+        std::shared_ptr<HttpClient> sharedClient(client.get()->Clone()); // clone the HttpClient
         client_ = sharedClient;
         if (!config_) {
             throw std::invalid_argument("SimulatorConfig cannot be null");
@@ -26,13 +26,13 @@ namespace lasvsim {
         std::string reply = client_->Post("/openapi/cosim/v2/simulation/init", reqJson.dump());
         
         json replyJson = json::parse(reply);
-        client_->addHeader("x-md-simulation_id", replyJson["simulation_id"]);
-        client_->addHeader("x-md-rl-direct-addr", replyJson["simulation_addr"]);
+        client_->AddHeader("x-md-simulation_id", replyJson["simulation_id"]);
+        client_->AddHeader("x-md-rl-direct-addr", replyJson["simulation_addr"]);
 
         simulation_id_ = replyJson["simulation_id"];
     }
 
-    void Simulator::stop(){
+    void Simulator::Stop(){
         json reqJson;
         reqJson["simulation_id"] = simulation_id_;
         client_->Post("/openapi/cosim/v2/simulation/stop", reqJson.dump());

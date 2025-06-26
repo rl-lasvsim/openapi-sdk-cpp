@@ -14,7 +14,7 @@ ProcessTask::ProcessTask(std::shared_ptr<HttpClient> httpClient)
     }
 }
 
-CopyRecordRes ProcessTask::copyRecord(int taskId, int recordId) {
+CopyRecordRes ProcessTask::CopyRecord(int taskId, int recordId) {
     if (taskId <= 0 || recordId <= 0) {
         throw std::invalid_argument("Invalid taskId or recordId");
     }

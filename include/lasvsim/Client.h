@@ -22,13 +22,13 @@ namespace lasvsim {
              * 获取处理任务
              * @return ProcessTask 对象
              */
-            std::shared_ptr<ProcessTask>& getProcessTask();
+            std::shared_ptr<ProcessTask>& GetProcessTask();
 
             /**
              * 初始化仿真器
              * @return Simulator 对象
              */
-            Simulator initSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simConfig);
+            Simulator InitSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simConfig);
         private:
             std::shared_ptr<HttpConfig> httpConfig;
             std::shared_ptr<HttpClient> httpClient;
