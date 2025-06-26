@@ -10,11 +10,12 @@ find_package(nlohmann_json 3.7.3 REQUIRED)
 
 # 添加可执行文件
 add_executable(demo
-    src/main.cpp
+    samples/main.cpp
     src/Client.cpp
     src/ProcessTask.cpp
     src/HttpClient.cpp
     src/HttpConfig.cpp
+    src/Simulator.cpp
 )
 
 # 包含目录

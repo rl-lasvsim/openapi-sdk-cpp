@@ -44,6 +44,12 @@ namespace Lasvsim {
             return SendRequest("POST", url, headers, body);
         }
 
+        virtual HttpClient* clone() = 0;
+
+        void addHeader(const std::string& key, const std::string& value) {
+            defaultHeaders_[key] = value;
+        }
+
     protected:
         std::shared_ptr<HttpConfig> config_;
         std::map<std::string, std::string> defaultHeaders_;
@@ -60,6 +66,7 @@ namespace Lasvsim {
             const std::string& url,
             const std::map<std::string, std::string>& headers,
             const std::string& body = "") override;
+        HttpClient* clone() override;
 
     private:
         static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);

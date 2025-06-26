@@ -131,4 +131,7 @@ namespace Lasvsim {
         return response;
     }
 
+    HttpClient* CurlHttpClient::clone() {
+        return new CurlHttpClient(config_, defaultHeaders_);
+    }
 } // namespace Lasvsim

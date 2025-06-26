@@ -22,28 +22,22 @@ CopyRecordRes ProcessTask::copyRecord(int taskId, int recordId) {
     try {
 
         // 构建json 字符串
-        json j;
-        j["task_id"] = taskId;
-        j["record_id"] = recordId;
-        std::string jsonStr = j.dump();
-        // 构建API路径
-        // std::string path = buildCopyRecordPath(taskId, recordId);
-        
-
-        // auto j = nlohmann::json::parse(jsonStr);
-        // a =  j.get<std::vector<T>>();
+        json reqJson;
+        reqJson["task_id"] = taskId;
+        reqJson["record_id"] = recordId;
+        std::string jsonStr = reqJson.dump();
 
         // // 发送POST请求(空body)
         std::string response = httpClient_->Post("/openapi/process_task/v2/record/copy", jsonStr);
         
         // 解析响应
-        json jRes = json::parse(response);
+        json resJson = json::parse(response);
 
         CopyRecordRes res;
-        res.newRecordId = jRes["new_record_id"];
-        res.simRecordId = jRes["sim_record_id"];
-        res.scenId = jRes["scen_id"];
-        res.scenVer = jRes["scen_ver"];
+        res.newRecordId = resJson["new_record_id"];
+        res.simRecordId = resJson["sim_record_id"];
+        res.scenId = resJson["scen_id"];
+        res.scenVer = resJson["scen_ver"];
 
         return res;
     } catch (const std::exception& e) {

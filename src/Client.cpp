@@ -24,6 +24,14 @@ void Client::initCommonClient() {
     }
 }
 
+Simulator Client::initSimulatorFromConfig(std::shared_ptr<SimulatorConfig> simConfig) {
+    if (!simConfig) {
+        throw std::invalid_argument("SimulatorConfig cannot be null");
+    }
+    
+    return Simulator(httpClient, simConfig);
+}
+
 std::shared_ptr<ProcessTask>&  Client::getProcessTask() {
     return processTask;
 }
