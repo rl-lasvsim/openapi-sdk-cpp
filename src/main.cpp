@@ -1,7 +1,7 @@
-#include "Lasvsim/Client.h"
+#include "lasvsim/Client.h"
 #include "lasvsim/HttpClient.h"
-#include "Lasvsim/HttpConfig.h"
-#include "Lasvsim/ProcessTask.h"
+#include "lasvsim/HttpConfig.h"
+#include "lasvsim/ProcessTask.h"
 #include <iostream>
 
 int main() {
@@ -16,10 +16,10 @@ int main() {
         Lasvsim::Client client(config);
 
         // 4. 调用接口 (替换为实际参数)
-        std::cout << "Calling copyRecord(123, 456)..." << std::endl;
+        std::cout << "Calling copyRecord(15352, 20936)..." << std::endl;
         std::shared_ptr<Lasvsim::ProcessTask> p = client.getProcessTask();
         // autp c = p.get()->copyRecord(1,1);
-        auto r = p.get()->copyRecord(123, 456);
+        auto r = p.get()->copyRecord(15352, 20936);
         // 5. 打印结果
         std::cout << "\nResult:\n"
                   << "  simRecordId: " << r.simRecordId << "\n"

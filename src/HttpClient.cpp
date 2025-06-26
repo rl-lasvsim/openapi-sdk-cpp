@@ -1,4 +1,4 @@
-#include "Lasvsim/HttpClient.h"
+#include "lasvsim/HttpClient.h"
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
@@ -14,13 +14,11 @@ namespace Lasvsim {
             throw std::invalid_argument("HttpConfig cannot be null");
         }
 
-        // auto my = headers;
-
         defaultHeaders_ = headers;
-        // if (defaultHeaders_.empty()) {
-        //     // 如果没有提供默认头，则初始化一个空的map
-        //     defaultHeaders_ = std::map<std::string, std::string>();
-        // }
+        if (defaultHeaders_.empty()) {
+            // 如果没有提供默认头，则初始化一个空的map
+            defaultHeaders_ = std::map<std::string, std::string>();
+        }
 
         // Add necessary default headers (without overriding custom ones)
         if (defaultHeaders_.find("Authorization") == defaultHeaders_.end() && !config_->getToken().empty()) {

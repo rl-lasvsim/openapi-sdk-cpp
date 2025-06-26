@@ -11,8 +11,8 @@ Client::Client(std::shared_ptr<HttpConfig> httpConfig)
         throw std::invalid_argument("HttpConfig cannot be null");
     }
 
-    auto aaa = std::map<std::string, std::string>();
-    httpClient = std::make_shared<CurlHttpClient>(httpConfig,aaa);
+    auto headers = std::map<std::string, std::string>();
+    httpClient = std::make_shared<CurlHttpClient>(httpConfig,headers);
     processTask = std::make_shared<ProcessTask>(httpClient);
 }
 
