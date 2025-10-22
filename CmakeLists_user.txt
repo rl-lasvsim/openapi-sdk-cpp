@@ -1,7 +1,0 @@
-cmake_minimum_required(VERSION 3.14)
-project(user_app)
-
-find_package(lasvsim REQUIRED PATHS /your/sdk/install/path/lib/cmake/lasvsim)
-
-add_executable(user_app main.cpp)
-target_link_libraries(user_app PRIVATE lasvsim::lasvsim)
