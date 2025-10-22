@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.14)
+project(lasvsim)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 查找 Curl
+find_package(CURL REQUIRED)
+
+# 查找 nlohmann_json（假设你用的是 CMake 包）
+find_package(nlohmann_json REQUIRED)
+
+# 包含头文件
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+# 创建 lasvsim 静态库
+add_library(lasvsim
+    src/Client.cpp
+    src/HttpClient.cpp
+    src/HttpConfig.cpp
+    src/ProcessTask.cpp
+    src/Simulator.cpp
+)
+
+# 链接外部库
+target_link_libraries(lasvsim
+    PRIVATE
+    ${CURL_LIBRARIES}
+    nlohmann_json::nlohmann_json
+)
+
+# 添加 samples 子目录
+add_subdirectory(samples)

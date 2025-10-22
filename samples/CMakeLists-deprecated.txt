@@ -1,0 +1,8 @@
+# 设置可执行文件
+add_executable(sample_main main.cpp)
+
+# 链接 src 中的库
+target_link_libraries(sample_main lasvsim)
+
+# 包含头文件路径（如果没在顶层 include_directories）
+target_include_directories(sample_main PRIVATE ${CMAKE_SOURCE_DIR}/include)
