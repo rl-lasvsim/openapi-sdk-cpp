@@ -83,7 +83,9 @@ namespace lasvsim {
                     double heading,
                     const std::string& lane_id,
                     int32_t lane_index,
-                    const Point& point
+                    const Point& point,
+                    double roll,
+                    const std::string& segment_id
             ) {}
     };
 

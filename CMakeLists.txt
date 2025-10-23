@@ -4,6 +4,15 @@ project(lasvsim VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# 添加调试标志
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+    # 对于Clang/Linux环境，可以添加LLDB特定的调试信息格式
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fstandalone-debug")
+    endif()
+endif()
+
 include(GNUInstallDirs)
 
 # 查找依赖
@@ -29,9 +38,13 @@ target_include_directories(lasvsim
 # 链接依赖
 target_link_libraries(lasvsim
     PRIVATE
-    ${CURL_LIBRARIES}
+    CURL::libcurl  # 使用现代CMake目标名称
     nlohmann_json::nlohmann_json
 )
+
+# 为调试版本设置属性
+target_compile_options(lasvsim PRIVATE $<$<CONFIG:Debug>:-g -O0>)
+target_compile_definitions(lasvsim PRIVATE $<$<CONFIG:Debug>:DEBUG=1>)
 
 # 导出 target 名字空间
 add_library(lasvsim::lasvsim ALIAS lasvsim)

@@ -4,7 +4,7 @@ cmake -B build -DCMAKE_INSTALL_PREFIX=/your/sdk/install/path
 cmake --build build
 
 例如：
-cmake -B samples/build samples -DCMAKE_INSTALL_PREFIX=lasvsim_install
+cmake -B samples/build samples -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=lasvsim_install
 cmake --build samples/build
 ### sdk打包安装
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=lasvsim_install

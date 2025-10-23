@@ -6,6 +6,15 @@
 
 using json = nlohmann::json;
 
+
+double getDoubleFromJson(const json& j, const std::string& key, double defaultValue = 0.0) {
+    if (j.contains(key) && !j[key].is_null()) {
+        return j[key].get<double>();
+    }
+    return defaultValue;
+}
+
+
 namespace lasvsim { 
     Simulator::Simulator(std::shared_ptr<HttpClient> client,
                        const std::shared_ptr<SimulatorConfig>& config)
@@ -158,24 +167,28 @@ namespace lasvsim {
                 std::string vehicle_id = item.key();
 
                 json value = item.value();
-                double x = value["x"];
-                double y = value["y"];
-                double z = value["z"];
+                std::cout << "value: " << value.dump() << std::endl;
+                std::cout << "value x: " << value["x"] << std::endl;
+                double x = value["point"]["x"];
+                double y = value["point"]["y"];
+                double z = value["point"]["z"];
                 
                 Position position(
                     value["junction_id"],
-                    value["lane_offset"],
+                    getDoubleFromJson(value,"lane_offset"),
                     value["link_id"],
-                    value["patch"],
-                    value["phi"],
+                    getDoubleFromJson(value,"patch"),
+                    getDoubleFromJson(value,"phi"),
                     value["type"],
-                    value["s"],
-                    value["dis_to_lane_end"],
-                    value["t"],
-                    value["heading"],
+                    getDoubleFromJson(value,"s"),
+                    getDoubleFromJson(value,"dis_to_lane_end"),
+                    getDoubleFromJson(value,"t"),
+                    getDoubleFromJson(value,"heading"),
                     value["lane_id"],
                     value["lane_index"],
-                    Point(x, y, z) 
+                    Point(x, y, z),
+                    getDoubleFromJson(value,"roll"),
+                    value["segment_id"]
                 );
 
                 position_dict.insert(std::make_pair(vehicle_id,position));
@@ -236,9 +249,11 @@ namespace lasvsim {
                         item["position"]["heading"],
                         item["position"]["lane_id"],
                         item["position"]["lane_index"],
-                        Point(item["position"]["point"]["x"],item["position"]["point"]["y"],item["position"]["point"]["z"])
+                        Point(item["position"]["point"]["x"],item["position"]["point"]["y"],item["position"]["point"]["z"]),
+                        item["position"]["roll"],
+                        item["position"]["segment_id"]
                     )
-                ); 
+                );
 
                 perception_list.push_back(perception_object);
             }
