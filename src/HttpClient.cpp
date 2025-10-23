@@ -5,6 +5,7 @@
 #include <sstream>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp> // 需要集成JSON库
+#include <iostream>
 
 using json = nlohmann::json;
 
