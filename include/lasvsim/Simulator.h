@@ -188,7 +188,7 @@ namespace lasvsim {
                                     double lon_acc,
                                     double ste_wheel);
             // 获取测试车辆id列表
-            std::vector<std::string> GetVehicleIdList();
+            std::vector<std::string> GetTestVehicleIdList();
         private:
             std::shared_ptr<HttpClient> client_;
             std::shared_ptr<SimulatorConfig> config_;

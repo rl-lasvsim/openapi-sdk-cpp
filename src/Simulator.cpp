@@ -334,7 +334,7 @@ namespace lasvsim {
     }
 
     // 获取测试车辆id列表
-    std::vector<std::string> Simulator::GetVehicleIdList() {
+    std::vector<std::string> Simulator::GetTestVehicleIdList() {
         std::string path = "/openapi/cosim/v2/simulation/test_vehicle/id_list/get";
         try
         {
