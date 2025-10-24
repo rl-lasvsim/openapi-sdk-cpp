@@ -14,6 +14,20 @@ double getDoubleFromJson(const json& j, const std::string& key, double defaultVa
     return defaultValue;
 }
 
+std::string getStringFromJson(const json& j, const std::string& key) {
+    if (j.contains(key) && !j[key].is_null() && j[key].is_string()) {
+        std::string result = j[key].get<std::string>();
+        return result.empty() ? "" : result;
+    }
+    return "";
+}
+
+int32_t getInt32FromJson(const json& j, const std::string& key) {
+    if (j.contains(key) && !j[key].is_null()) {
+        return j[key].get<int32_t>();
+    }
+    return 0;
+}
 
 namespace lasvsim { 
     Simulator::Simulator(std::shared_ptr<HttpClient> client,
@@ -168,15 +182,17 @@ namespace lasvsim {
 
                 json value = item.value();
                 std::cout << "value: " << value.dump() << std::endl;
-                std::cout << "value x: " << value["x"] << std::endl;
+                std::cout << "value x: " <<  value["point"]["x"] << std::endl;
+                std::cout << "value lane_index: " <<  value["lane_index"] << std::endl;
+
                 double x = value["point"]["x"];
                 double y = value["point"]["y"];
                 double z = value["point"]["z"];
                 
                 Position position(
-                    value["junction_id"],
+                    getStringFromJson(value,"junction_id"),
                     getDoubleFromJson(value,"lane_offset"),
-                    value["link_id"],
+                    getStringFromJson(value,"link_id"),
                     getDoubleFromJson(value,"patch"),
                     getDoubleFromJson(value,"phi"),
                     value["type"],
@@ -184,8 +200,9 @@ namespace lasvsim {
                     getDoubleFromJson(value,"dis_to_lane_end"),
                     getDoubleFromJson(value,"t"),
                     getDoubleFromJson(value,"heading"),
-                    value["lane_id"],
-                    value["lane_index"],
+                    getStringFromJson(value,"lane_id"),
+                    // value["lane_index"],
+                    getInt32FromJson(value,"lane_index"),
                     Point(x, y, z),
                     getDoubleFromJson(value,"roll"),
                     value["segment_id"]
@@ -209,7 +226,7 @@ namespace lasvsim {
     // 获取感知信息
     std::vector<PerceptionObject> Simulator::GetPerceptionList(const std::string& vehicle_id) { 
         std::string path = "/openapi/cosim/v2/simulation/vehicle/perception/get";
-
+        json gjson;
         try
         { 
             json reqJson;
@@ -218,40 +235,62 @@ namespace lasvsim {
 
             std::string reply = client_->Post(path, reqJson.dump());
             json replyJson = json::parse(reply);
+            gjson = replyJson;
 
             std::vector<PerceptionObject> perception_list;
             for (auto& item : replyJson["list"]) {
                 PerceptionObject perception_object(
                     ObjBaseInfo(
-                        item["base_info"]["weight"],
-                        item["base_info"]["width"],
-                        item["base_info"]["height"],
-                        item["base_info"]["length"]
+                        getDoubleFromJson(item["base_info"],"weight"),
+                        getDoubleFromJson(item["base_info"],"width"),
+                        getDoubleFromJson(item["base_info"],"height"),
+                        getDoubleFromJson(item["base_info"],"length")
                     ),
-                    ObjMovingInfo(item["moving_info"]["u"],
-                        item["moving_info"]["u_acc"],
-                        item["moving_info"]["v"],
-                        item["moving_info"]["v_acc"],
-                        item["moving_info"]["w"],
-                        item["moving_info"]["w_acc"]
+                    ObjMovingInfo(
+                        getDoubleFromJson(item["moving_info"],"u"),
+                        getDoubleFromJson(item["moving_info"],"u_acc"),
+                        getDoubleFromJson(item["moving_info"],"v"),
+                        getDoubleFromJson(item["moving_info"],"v_acc"),
+                        getDoubleFromJson(item["moving_info"],"w"),
+                        getDoubleFromJson(item["moving_info"],"w_acc")
                     ),
-                    item["obj_id"],
+                    getStringFromJson(item,"obj_id"),
+
+                    /*
+                    
+            Position(const std::string& junction_id,
+                    double lane_offset,
+                    const std::string& link_id,
+                    double patch,
+                    double phi,
+                    PositionType type,
+                    double s,
+                    double dis_to_lane_end,
+                    double t,
+                    double heading,
+                    const std::string& lane_id,
+                    int32_t lane_index,
+                    const Point& point,
+                    double roll,
+                    const std::string& segment_id
+            ) {}
+                     */
                     Position(
-                        item["position"]["junction_id"],
-                        item["position"]["lane_offset"],
-                        item["position"]["link_id"],
-                        item["position"]["patch"],
-                        item["position"]["phi"],
+                        getStringFromJson(item["position"],"junction_id"),
+                        getDoubleFromJson(item["position"],"lane_offset"),
+                        getStringFromJson(item["position"],"link_id"),
+                        getDoubleFromJson(item["position"],"patch"),
+                        getDoubleFromJson(item["position"],"phi"),
                         item["position"]["type"],
-                        item["position"]["s"],
-                        item["position"]["dis_to_lane_end"],
-                        item["position"]["t"],
-                        item["position"]["heading"],
-                        item["position"]["lane_id"],
-                        item["position"]["lane_index"],
+                        getDoubleFromJson(item["position"],"s"),
+                        getDoubleFromJson(item["position"],"dis_to_lane_end"),
+                        getDoubleFromJson(item["position"],"t"),
+                        getDoubleFromJson(item["position"],"heading"),
+                        getStringFromJson(item["position"],"lane_id"),
+                        getInt32FromJson(item["position"],"lane_index"),
                         Point(item["position"]["point"]["x"],item["position"]["point"]["y"],item["position"]["point"]["z"]),
-                        item["position"]["roll"],
-                        item["position"]["segment_id"]
+                        getDoubleFromJson(item["position"],"roll"),
+                        getStringFromJson(item["position"],"segment_id")
                     )
                 );
 
