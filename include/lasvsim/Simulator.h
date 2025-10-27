@@ -104,6 +104,25 @@ namespace lasvsim {
                 : weight(weight), width(width), height(height), length(length) {}
     };
 
+    // 动力学信息
+    class DynamicInfo {
+        public:
+            double front_axle_to_center;     // 前轴到重心距离, 单位: [m]
+            double front_wheel_stiffness;    // 前轮转弯刚度, 单位: [N/rad]
+            double rear_axle_to_center;      // 后轴到重心距离, 单位: [m]
+            double rear_wheel_stiffness;     // 后轮转弯刚度, 单位: [N/rad]
+            double yaw_moment_of_inertia;    // 重心处的极惯性矩, 单位: [kg*m^2]
+
+            DynamicInfo(double front_axle_to_center,
+                    double front_wheel_stiffness,
+                    double rear_axle_to_center,
+                    double rear_wheel_stiffness,
+                    double yaw_moment_of_inertia)
+                : front_axle_to_center(front_axle_to_center), front_wheel_stiffness(front_wheel_stiffness),
+                rear_axle_to_center(rear_axle_to_center), rear_wheel_stiffness(rear_wheel_stiffness),
+                yaw_moment_of_inertia(yaw_moment_of_inertia) {}
+    };
+
     // 运动信息结构
     class ObjMovingInfo {
         public:
@@ -168,6 +187,17 @@ namespace lasvsim {
                         const std::vector<std::string>& link_junction_nav) {}
     };
 
+    // 车辆基本信息
+    class VehicleInfo {
+        public:
+            ObjBaseInfo base_info;
+            DynamicInfo dynamic_info;
+
+            VehicleInfo(const ObjBaseInfo& base_info,
+                    const DynamicInfo& dynamic_info)
+                : base_info(base_info), dynamic_info(dynamic_info) {}
+    };
+
     class Simulator {
         public:
             Simulator() = default;
@@ -189,6 +219,8 @@ namespace lasvsim {
                                     double ste_wheel);
             // 获取测试车辆id列表
             std::vector<std::string> GetTestVehicleIdList();
+            // 获取车辆基本信息
+            std::unordered_map<std::string, VehicleInfo> GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids);
         private:
             std::shared_ptr<HttpClient> client_;
             std::shared_ptr<SimulatorConfig> config_;

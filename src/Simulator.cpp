@@ -359,4 +359,56 @@ namespace lasvsim {
             throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
         }
     }
+
+    // 获取车辆基本信息
+    // std::unordered_map<std::string, VehicleInfo> GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids);
+    std::unordered_map<std::string, VehicleInfo> Simulator::GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids) { 
+        std::string path = "/openapi/cosim/v2/simulation/vehicle/base_info/get";
+
+        try
+        {
+           json reqJson;
+           reqJson["simulation_id"] = simulation_id_;
+           reqJson["id_list"] = vehicle_ids;
+
+           std::string reply =  client_->Post(path, reqJson.dump());
+           json replyJson = json::parse(reply);
+
+           std::unordered_map<std::string, VehicleInfo> vehicles_info;
+           for (auto& item : replyJson["info_dict"].items()) {
+               json value = item.value();
+               ObjBaseInfo base_info(
+                   getDoubleFromJson(value["base_info"],"weight"),
+                   getDoubleFromJson(value["base_info"],"width"),
+                   getDoubleFromJson(value["base_info"],"height"),
+                   getDoubleFromJson(value["base_info"],"length")
+               );
+
+               DynamicInfo dynamic_info(
+                   getDoubleFromJson(value["dynamic_info"],"front_axle_to_center"),
+                   getDoubleFromJson(value["dynamic_info"],"front_wheel_stiffness"),
+                   getDoubleFromJson(value["dynamic_info"],"rear_axle_to_center"),
+                   getDoubleFromJson(value["dynamic_info"],"rear_wheel_stiffness"),
+                   getDoubleFromJson(value["dynamic_info"],"yaw_moment_of_inertia")
+               );
+
+               VehicleInfo vehicle_info(
+                   base_info,
+                   dynamic_info
+               );
+
+               vehicles_info.insert(std::make_pair(item.key(),vehicle_info));
+           }
+
+           return vehicles_info;
+        }
+        catch(const SDKException& e)
+        {
+            throw e;
+        }
+        catch(const std::exception& e)
+        {
+            throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
+        }
+    }
 }
