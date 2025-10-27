@@ -188,12 +188,12 @@ namespace lasvsim {
     };
 
     // 车辆基本信息
-    class VehicleInfo {
+    class VehicleBaseInfo {
         public:
             ObjBaseInfo base_info;
             DynamicInfo dynamic_info;
 
-            VehicleInfo(const ObjBaseInfo& base_info,
+            VehicleBaseInfo(const ObjBaseInfo& base_info,
                     const DynamicInfo& dynamic_info)
                 : base_info(base_info), dynamic_info(dynamic_info) {}
     };
@@ -220,7 +220,9 @@ namespace lasvsim {
             // 获取测试车辆id列表
             std::vector<std::string> GetTestVehicleIdList();
             // 获取车辆基本信息
-            std::unordered_map<std::string, VehicleInfo> GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids);
+            std::unordered_map<std::string, VehicleBaseInfo> GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids);
+            // 根据id列表获取车辆运动信息
+            std::unordered_map<std::string, ObjMovingInfo> GetVehiclesMovingInfo(const std::vector<std::string>& vehicle_ids);
         private:
             std::shared_ptr<HttpClient> client_;
             std::shared_ptr<SimulatorConfig> config_;

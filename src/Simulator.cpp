@@ -362,7 +362,7 @@ namespace lasvsim {
 
     // 获取车辆基本信息
     // std::unordered_map<std::string, VehicleInfo> GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids);
-    std::unordered_map<std::string, VehicleInfo> Simulator::GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids) { 
+    std::unordered_map<std::string, VehicleBaseInfo> Simulator::GetVehiclesBaseInfo(const std::vector<std::string>& vehicle_ids) { 
         std::string path = "/openapi/cosim/v2/simulation/vehicle/base_info/get";
 
         try
@@ -374,7 +374,7 @@ namespace lasvsim {
            std::string reply =  client_->Post(path, reqJson.dump());
            json replyJson = json::parse(reply);
 
-           std::unordered_map<std::string, VehicleInfo> vehicles_info;
+           std::unordered_map<std::string, VehicleBaseInfo> vehicles_info;
            for (auto& item : replyJson["info_dict"].items()) {
                json value = item.value();
                ObjBaseInfo base_info(
@@ -392,7 +392,7 @@ namespace lasvsim {
                    getDoubleFromJson(value["dynamic_info"],"yaw_moment_of_inertia")
                );
 
-               VehicleInfo vehicle_info(
+               VehicleBaseInfo vehicle_info(
                    base_info,
                    dynamic_info
                );
@@ -401,6 +401,43 @@ namespace lasvsim {
            }
 
            return vehicles_info;
+        }
+        catch(const SDKException& e)
+        {
+            throw e;
+        }
+        catch(const std::exception& e)
+        {
+            throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
+        }
+    }
+
+    // 根据id列表获取车辆运动信息
+    std::unordered_map<std::string, ObjMovingInfo> GetVehiclesMovingInfo(const std::vector<std::string>& vehicle_ids) {
+        std::string path = "/openapi/cosim/v2/simulation/vehicle/moving_info/get";
+
+        try
+        { 
+            json reqJson;
+            reqJson["simulation_id"] = simulation_id_;
+            reqJson["id_list"] = vehicle_ids;
+
+            std::string reply =  client_->Post(path, reqJson.dump());
+            json replyJson = json::parse(reply);
+            std::unordered_map<std::string, ObjMovingInfo> vehicles_info;
+            for (auto& item : replyJson["info_dict"].items()) { 
+                json value = item.value();
+               ObjMovingInfo moving_info(
+                   getDoubleFromJson(value,"u"),
+                   getDoubleFromJson(value,"u_acc"),
+                   getDoubleFromJson(value,"v"),
+                   getDoubleFromJson(value,"v_acc"),
+                   getDoubleFromJson(value,"w"),
+                   getDoubleFromJson(value,"w_acc")
+               );
+
+               vehicles_info.insert(std::make_pair(item.key(),moving_info));
+            }
         }
         catch(const SDKException& e)
         {
