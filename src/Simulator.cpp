@@ -413,7 +413,7 @@ namespace lasvsim {
     }
 
     // 根据id列表获取车辆运动信息
-    std::unordered_map<std::string, ObjMovingInfo> GetVehiclesMovingInfo(const std::vector<std::string>& vehicle_ids) {
+    std::unordered_map<std::string, ObjMovingInfo> Simulator::GetVehiclesMovingInfo(const std::vector<std::string>& vehicle_ids) {
         std::string path = "/openapi/cosim/v2/simulation/vehicle/moving_info/get";
 
         try
