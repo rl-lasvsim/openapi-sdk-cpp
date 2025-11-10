@@ -197,9 +197,9 @@ namespace lasvsim
 
                 json value = item.value();
 
-                double x = value["point"]["x"];
-                double y = value["point"]["y"];
-                double z = value["point"]["z"];
+                double x = value["point"]["x"].get<double>();
+                double y = value["point"]["y"].get<double>();
+                double z = value["point"]["z"].get<double>();
 
                 Position position(
                     getStringFromJson(value, "junction_id"),
@@ -215,6 +215,7 @@ namespace lasvsim
                     getStringFromJson(value, "lane_id"),
                     // value["lane_index"],
                     getInt32FromJson(value, "lane_index"),
+                    // temp_point,
                     Point(x, y, z),
                     getDoubleFromJson(value, "roll"),
                     value["segment_id"]);
