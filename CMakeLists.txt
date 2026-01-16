@@ -10,14 +10,12 @@ include(GNUInstallDirs)
 find_package(CURL REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
-# 添加库
-add_library(lasvsim
-    src/Client.cpp
-    src/HttpClient.cpp
-    src/HttpConfig.cpp
-    src/ProcessTask.cpp
-    src/Simulator.cpp
+file(GLOB_RECURSE SRCFILES 
+    "src/*.cpp"
 )
+
+# 添加库
+add_library(lasvsim ${SRCFILES})
 
 # 添加包含目录
 target_include_directories(lasvsim
