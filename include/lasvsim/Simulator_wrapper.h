@@ -15,10 +15,7 @@ typedef struct Lasvsim_Simulator Lasvsim_Simulator;
 // 1. SimulatorConfig 接口
 Lasvsim_SimulatorConfig* Lasvsim_SimConfig_Create(const char* scenId, const char* scenVer, const char* simRecordId, int maxStep);
 void Lasvsim_SimConfig_Delete(Lasvsim_SimulatorConfig* cfg);
-
-// 2. Simulator 核心接口
-// Lasvsim_Simulator* Lasvsim_Simulator_Create(Lasvsim_HttpClient* client, Lasvsim_SimulatorConfig* cfg);
-// void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim);
+void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim);
 
 int Lasvsim_Simulator_Step(Lasvsim_Simulator* sim); // 返回 StepCode (0: RUNNING, 1001: FINISHED, 1002: FAILED)
 void Lasvsim_Simulator_Stop(Lasvsim_Simulator* sim);
@@ -34,7 +31,17 @@ typedef struct {
 
 int Lasvsim_Simulator_GetVehiclePos(Lasvsim_Simulator* sim, const char* vehicle_id, Lasvsim_SimplePos* outPos);
 
-void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim);
+// 设置车辆位置
+void Lasvsim_Simulator_SetVehiclePosition(Lasvsim_Simulator* sim, const char* vehicle_id, double x, double y,double z, double heading);
+
+typedef struct {
+    char** ids;      // Array of string pointers
+    int count;       // Number of IDs in the array
+} Lasvsim_VehicleIdList;
+
+// 获取车辆id列表 std::vector<std::string> GetVehicleIdList();
+int Lasvsim_Simulator_GetVehicleIdList(Lasvsim_Simulator* sim,char **outIds);
+
 
 #ifdef __cplusplus
 }

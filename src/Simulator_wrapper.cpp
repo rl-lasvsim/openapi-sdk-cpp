@@ -25,21 +25,18 @@ Lasvsim_SimulatorConfig* Lasvsim_SimConfig_Create(const char* scenId, const char
     return wrapper;
 }
 
-// Simulator 构造
-// Lasvsim_Simulator* Lasvsim_Simulator_Create(Lasvsim_HttpClient* client_wrap, Lasvsim_SimulatorConfig* cfg_wrap) {
-//     if (!client_wrap || !cfg_wrap) return nullptr;
-//     try {
-//         auto wrapper = new Lasvsim_Simulator();
-//         // 这里的构造需要 SDK 支持传入 shared_ptr
-//         wrapper->obj = std::make_unique<lasvsim::Simulator>(client_wrap->client, cfg_wrap->obj);
-//         return wrapper;
-//     } catch (...) { return nullptr; }
-// }
+void Lasvsim_SimConfig_Delete(Lasvsim_SimulatorConfig* cfg) { delete cfg; }
+
+void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim) { delete sim; }
 
 int Lasvsim_Simulator_Step(Lasvsim_Simulator* sim) {
     if (!sim) return 1002;
     auto res = sim->obj->Step();
     return static_cast<int>(res.code);
+}
+
+void Lasvsim_Simulator_Stop(Lasvsim_Simulator* sim) {
+    if (sim) sim->obj->Stop();
 }
 
 void Lasvsim_Simulator_SetControl(Lasvsim_Simulator* sim, const char* vehicle_id, double lon_acc, double ste_wheel) {
@@ -67,7 +64,56 @@ int Lasvsim_Simulator_GetVehiclePos(Lasvsim_Simulator* sim, const char* vehicle_
     return 0;
 }
 
-void Lasvsim_SimConfig_Delete(Lasvsim_SimulatorConfig* cfg) { delete cfg; }
 
-void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim) { delete sim; }
+void Lasvsim_Simulator_SetVehiclePosition(Lasvsim_Simulator* sim, const char* vehicle_id, double x, double y,double z, double heading) {
+    if (sim && vehicle_id) {
+        lasvsim::Point p(x, y, z);
+        sim->obj->SetVehiclePosition(vehicle_id, heading,p);
+    }
+}
+
+int Lasvsim_Simulator_GetVehicleIdList(Lasvsim_Simulator* sim,char **outIds)  {
+    if (!sim || !outIds) {
+        return -1; // Error: invalid input parameters
+    }
+    
+
+    try {
+        std::vector<std::string> ids = sim->obj->GetVehicleIdList();
+        size_t count = ids.size();
+        
+        if (count == 0) {
+            *outIds = nullptr;
+            return 0; 
+        }
+        
+        char** result = (char**)malloc(sizeof(char*) * (count + 1));
+        
+        if (!result) {
+            return -1; 
+        }
+        
+        for (size_t i = 0; i < count; ++i) {
+            result[i] = (char*)malloc(sizeof(char) * (ids[i].length() + 1));
+            if (!result[i]) {
+                for (size_t j = 0; j < i; ++j) {
+                    free(result[j]);
+                }
+                free(result);
+                return -1; 
+            }
+            strcpy(result[i], ids[i].c_str());
+        }
+        
+        result[count] = nullptr;
+        
+        *outIds = result[0]; 
+        *outIds = (char*)result;
+        
+        return 0;
+    } catch (...) {
+        return -1; // Error occurred
+    }
+}
+
 }

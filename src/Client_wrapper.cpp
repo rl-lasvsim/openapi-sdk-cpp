@@ -28,8 +28,12 @@ Lasvsim_Client* Lasvsim_Client_Create(Lasvsim_HttpConfig* config_wrapper) {
         Lasvsim_Client* wrapper = new Lasvsim_Client();
         wrapper->client = std::make_unique<lasvsim::Client>(config_ptr);
         return wrapper;
+    } catch (const std::exception& e) {
+        fprintf(stderr, "ERROR: Exception caught in Lasvsim_Client_Create: %s\n", e.what());
+        return nullptr; // 失败
     } catch (...) {
-        return nullptr;
+        fprintf(stderr, "ERROR: Unknown exception caught in Lasvsim_Client_Create\n");
+        return nullptr; // 失败
     }
 }
 

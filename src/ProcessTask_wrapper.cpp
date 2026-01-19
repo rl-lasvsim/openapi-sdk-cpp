@@ -37,11 +37,30 @@ void Lasvsim_ProcessTask_Delete(Lasvsim_ProcessTask* task) {
 }
 
 int Lasvsim_ProcessTask_CopyRecord(Lasvsim_ProcessTask* task, int taskId, int recordId, Lasvsim_CopyRecordRes* outRes) {
+        // Add logging to identify which object is null
+    if (!task) {
+        fprintf(stderr, "DEBUG: task is NULL\n");
+        return -1;
+    }
+    
+    if (!task->obj) {
+        fprintf(stderr, "DEBUG: task->obj is NULL\n");
+        return -1;
+    }
+    
+    if (!outRes) {
+        fprintf(stderr, "DEBUG: outRes is NULL\n");
+        return -1;
+    }
+
     if (!task || !task->obj || !outRes) return -1;
 
     try {
+        
         // 调用 C++ 接口
         lasvsim::CopyRecordRes res = task->obj->CopyRecord(taskId, recordId);
+
+        fprintf(stderr, "DEBUG: CopyRecord called with taskId=%d, recordId=%d\n", taskId, recordId);
 
         // 填充 C 结构体，使用 strncpy 确保安全
         std::strncpy(outRes->sim_record_id, res.sim_record_id.c_str(), sizeof(outRes->sim_record_id) - 1);
@@ -50,8 +69,11 @@ int Lasvsim_ProcessTask_CopyRecord(Lasvsim_ProcessTask* task, int taskId, int re
         outRes->new_record_id = res.new_record_id;
 
         return 0; // 成功
+    } catch (const std::exception& e) {
+        fprintf(stderr, "ERROR: Exception caught in Lasvsim_ProcessTask_CopyRecord: %s\n", e.what());
+        return -2; // 失败
     } catch (...) {
-        // 这里可以配合之前的 Error Wrapper 记录具体的异常信息
+        fprintf(stderr, "ERROR: Unknown exception caught in Lasvsim_ProcessTask_CopyRecord - taskId=%d, recordId=%d\n", taskId, recordId);
         return -2; // 失败
     }
 }

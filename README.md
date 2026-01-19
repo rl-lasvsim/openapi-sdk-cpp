@@ -12,6 +12,7 @@ cmake --build samples/build
 cmake -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=lasvsim_install -DCMAKE_TOOLCHAIN_FILE=D:\app\vcpkg\scripts\buildsystems\vcpkg.cmake
 // unix
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=lasvsim_install
+cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=lasvsim_install
 
 cmake --build build --target install
 ### 依赖安装

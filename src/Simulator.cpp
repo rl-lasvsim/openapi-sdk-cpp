@@ -305,4 +305,30 @@ namespace lasvsim {
             throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
         }
     }
+
+    void Simulator::SetVehiclePosition(const std::string& vehicle_id,const double phi,const Point& Point){
+        std::string path = "/openapi/cosim/v2/simulation/vehicle/position/set";     
+        try
+        { 
+            json reqJson;
+            reqJson["simulation_id"] = simulation_id_;
+            reqJson["vehicle_id"] = vehicle_id;
+            reqJson["phi"] = phi;
+            reqJson["point"]["x"] = Point.x;
+            reqJson["point"]["y"] = Point.y;
+            reqJson["point"]["z"] = Point.z;
+
+            client_->Post(path, reqJson.dump());
+            return;
+        }
+        catch(const SDKException& e)
+        {
+            throw e;
+        }
+        catch(const std::exception& e)
+        {
+            throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
+        }         
+                
+    }
 }

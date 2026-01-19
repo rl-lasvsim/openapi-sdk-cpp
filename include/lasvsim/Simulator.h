@@ -187,6 +187,9 @@ namespace lasvsim {
                                     double ste_wheel);
             // 获取测试车辆id列表
             std::vector<std::string> GetVehicleIdList();
+            // 修改车辆位置
+            void SetVehiclePosition(const std::string& vehicle_id,
+                                const double phi,const Point& Point);
         private:
             std::shared_ptr<HttpClient> client_;
             std::shared_ptr<SimulatorConfig> config_;

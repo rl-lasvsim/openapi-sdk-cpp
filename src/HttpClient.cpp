@@ -98,7 +98,9 @@ namespace lasvsim {
         if (fullUrl.front() == '/') {
             fullUrl = config_->GetEndpoint() + fullUrl;
         }
-        
+
+        // 检查HTTP状态码
+        long httpCode = 0;
         try {
             // 设置基本选项
             SetCurlOptions(curl, method, fullUrl);
@@ -120,8 +122,6 @@ namespace lasvsim {
                 throw std::runtime_error("cURL error: " + std::string(curl_easy_strerror(res)));
             }
             
-            // 检查HTTP状态码
-            long httpCode = 0;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
             if (httpCode != 200) {
                 /**
@@ -142,9 +142,22 @@ namespace lasvsim {
                 throw SDKException(httpCode, error_json["message"], error_json["reason"],fullUrl);
             }
             
+        } catch (const json::parse_error& e) {
+            curl_easy_cleanup(curl);
+            // Handle case where response is not valid JSON
+            std::string error_message = "Invalid JSON response received. HTTP Code: " + std::to_string(httpCode) + 
+                                    ", Response: " + response;
+            throw SDKException(httpCode, error_message, "JSON_PARSE_ERROR", fullUrl);
+        } catch (const std::exception& e) {
+            curl_easy_cleanup(curl);
+            // Handle other potential exceptions during error processing
+            std::string error_message = "Error processing error response: " + std::string(e.what()) + 
+                                    ". HTTP Code: " + std::to_string(httpCode) + 
+                                    ", Raw Response: " + response;
+            throw SDKException(httpCode, error_message, "ERROR_PROCESSING_ERROR", fullUrl);
         } catch (...) {
             curl_easy_cleanup(curl);
-            throw;
+            throw SDKException(httpCode, "Unknown error", "UNKNOWN_ERROR", fullUrl);
         }
         
         curl_easy_cleanup(curl);
