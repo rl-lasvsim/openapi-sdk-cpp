@@ -2,6 +2,7 @@
 #include "lasvsim/Client_wrapper.h"
 #include "lasvsim/Client.h"
 #include "lasvsim/HttpConfig.h"
+#include "Simulator_wrapper.cpp"
 
 // 内部持有封装
 struct Lasvsim_Client {
@@ -64,6 +65,20 @@ Lasvsim_ProcessTask* Lasvsim_Client_GetProcessTask(Lasvsim_Client* client) {
         fprintf(stderr, "Failed to get process task: %s\n", e.what());
         return nullptr;
     }
+}
+
+// Simulator 构造
+Lasvsim_Simulator* Lasvsim_Simulator_Create_From_Client(Lasvsim_Client* client_wrap, Lasvsim_SimulatorConfig* cfg_wrap) {
+    if (!client_wrap || !cfg_wrap) return nullptr;
+    try {
+        auto wrapper = new Lasvsim_Simulator();
+
+        lasvsim::Simulator simor = client_wrap->client->InitSimulatorFromConfig(cfg_wrap->obj);
+
+        // 这里的构造需要 SDK 支持传入 shared_ptr
+        wrapper->obj = std::make_unique<lasvsim::Simulator>(simor);
+        return wrapper;
+    } catch (...) { return nullptr; }
 }
 
 }

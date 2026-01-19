@@ -1,7 +1,7 @@
 #ifndef LASVSIM_SIMULATOR_WRAPPER_H
 #define LASVSIM_SIMULATOR_WRAPPER_H
 
-#include "lasvsim/HpptClient_wrapper.h" // 引用之前定义的 HttpConfig 指针
+#include "lasvsim/HttpClient_wrapper.h" // 引用之前定义的 HttpConfig 指针
 
 
 #ifdef __cplusplus
@@ -17,8 +17,8 @@ Lasvsim_SimulatorConfig* Lasvsim_SimConfig_Create(const char* scenId, const char
 void Lasvsim_SimConfig_Delete(Lasvsim_SimulatorConfig* cfg);
 
 // 2. Simulator 核心接口
-Lasvsim_Simulator* Lasvsim_Simulator_Create(Lasvsim_HttpClient* client, Lasvsim_SimulatorConfig* cfg);
-void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim);
+// Lasvsim_Simulator* Lasvsim_Simulator_Create(Lasvsim_HttpClient* client, Lasvsim_SimulatorConfig* cfg);
+// void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim);
 
 int Lasvsim_Simulator_Step(Lasvsim_Simulator* sim); // 返回 StepCode (0: RUNNING, 1001: FINISHED, 1002: FAILED)
 void Lasvsim_Simulator_Stop(Lasvsim_Simulator* sim);
@@ -33,6 +33,8 @@ typedef struct {
 } Lasvsim_SimplePos;
 
 int Lasvsim_Simulator_GetVehiclePos(Lasvsim_Simulator* sim, const char* vehicle_id, Lasvsim_SimplePos* outPos);
+
+void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim);
 
 #ifdef __cplusplus
 }

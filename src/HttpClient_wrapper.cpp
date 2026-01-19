@@ -1,4 +1,4 @@
-#include "lasvsim/HpptClient_wrapper.h"
+#include "lasvsim/HttpClient_wrapper.h"
 #include "lasvsim/HttpClient.h"
 #include "lasvsim/HttpConfig.h"
 #include <map>

@@ -26,15 +26,15 @@ Lasvsim_SimulatorConfig* Lasvsim_SimConfig_Create(const char* scenId, const char
 }
 
 // Simulator 构造
-Lasvsim_Simulator* Lasvsim_Simulator_Create(Lasvsim_HttpClient* client_wrap, Lasvsim_SimulatorConfig* cfg_wrap) {
-    if (!client_wrap || !cfg_wrap) return nullptr;
-    try {
-        auto wrapper = new Lasvsim_Simulator();
-        // 这里的构造需要 SDK 支持传入 shared_ptr
-        wrapper->obj = std::make_unique<lasvsim::Simulator>(client_wrap->client, cfg_wrap->obj);
-        return wrapper;
-    } catch (...) { return nullptr; }
-}
+// Lasvsim_Simulator* Lasvsim_Simulator_Create(Lasvsim_HttpClient* client_wrap, Lasvsim_SimulatorConfig* cfg_wrap) {
+//     if (!client_wrap || !cfg_wrap) return nullptr;
+//     try {
+//         auto wrapper = new Lasvsim_Simulator();
+//         // 这里的构造需要 SDK 支持传入 shared_ptr
+//         wrapper->obj = std::make_unique<lasvsim::Simulator>(client_wrap->client, cfg_wrap->obj);
+//         return wrapper;
+//     } catch (...) { return nullptr; }
+// }
 
 int Lasvsim_Simulator_Step(Lasvsim_Simulator* sim) {
     if (!sim) return 1002;
@@ -67,7 +67,7 @@ int Lasvsim_Simulator_GetVehiclePos(Lasvsim_Simulator* sim, const char* vehicle_
     return 0;
 }
 
-void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim) { delete sim; }
 void Lasvsim_SimConfig_Delete(Lasvsim_SimulatorConfig* cfg) { delete cfg; }
 
+void Lasvsim_Simulator_Delete(Lasvsim_Simulator* sim) { delete sim; }
 }

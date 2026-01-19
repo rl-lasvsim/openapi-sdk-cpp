@@ -34,10 +34,11 @@ int Lasvsim_Client_IsTaskValid(Lasvsim_Client* client);
 Lasvsim_ProcessTask* Lasvsim_Client_GetProcessTask(Lasvsim_Client* client);
 
 /**
- * 从配置初始化仿真器
- * 注意：这里假设 Simulator 也被包装成了指针
+ * 从client创建仿真器
  */
 // Lasvsim_Simulator* Lasvsim_Client_InitSimulator(Lasvsim_Client* client, Lasvsim_SimConfig* sim_cfg);
+
+Lasvsim_Simulator* Lasvsim_Simulator_Create_From_Client(Lasvsim_Client* client_wrap, Lasvsim_SimulatorConfig* cfg_wrap);
 
 #ifdef __cplusplus
 }
