@@ -53,6 +53,10 @@ const char* Lasvsim_HttpClient_Post(Lasvsim_HttpClient* client, const char* url,
         client->last_response = client->client->Post(url, body ? body : "");
         return client->last_response.c_str();
     } catch (const std::exception& e) {
+        // 1. 将错误信息保存到上次错误变量中（假设你有个全局或 client 相关的 last_error）
+        // 这里可以调用你之前定义的 Error_wrapper 接口
+        // 2. 直接打印日志
+        fprintf(stderr, "[Lasvsim Exception] POST to %s failed: %s\n", url, e.what());
         // 此处可以配合上一步的 Error Wrapper 记录错误
         client->last_response = "";
         return nullptr;

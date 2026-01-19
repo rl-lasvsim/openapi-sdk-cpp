@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "lasvsim/HttpConfig.h"
 
 namespace lasvsim {

@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(GNUInstallDirs)
 
 # 查找依赖
-find_package(CURL REQUIRED)
-find_package(nlohmann_json REQUIRED)
+# find_package(CURL REQUIRED)
+# find_package(nlohmann_json REQUIRED)
 
 file(GLOB_RECURSE SRCFILES 
     "src/*.cpp"
@@ -28,7 +28,7 @@ target_include_directories(lasvsim
 target_link_libraries(lasvsim
     PRIVATE
     ${CURL_LIBRARIES}
-    nlohmann_json::nlohmann_json
+    # nlohmann_json::nlohmann_json
 )
 
 # 导出 target 名字空间
