@@ -8,7 +8,11 @@ cmake -B samples/build samples -DCMAKE_INSTALL_PREFIX=lasvsim_install
 cmake --build samples/build
 ### sdk打包安装
 // -G "MinGW Makefiles"表示使用minWG进行编译
+// windows
 cmake -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=lasvsim_install -DCMAKE_TOOLCHAIN_FILE=D:\app\vcpkg\scripts\buildsystems\vcpkg.cmake
+// unix
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=lasvsim_install
+
 cmake --build build --target install
 ### 依赖安装
 方式一：

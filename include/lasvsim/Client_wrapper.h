@@ -28,6 +28,12 @@ void Lasvsim_Client_Delete(Lasvsim_Client* client);
 int Lasvsim_Client_IsTaskValid(Lasvsim_Client* client);
 
 /**
+ * 获取 ProcessTask 对象
+ * 返回 ProcessTask 的包装指针
+ */
+Lasvsim_ProcessTask* Lasvsim_Client_GetProcessTask(Lasvsim_Client* client);
+
+/**
  * 从配置初始化仿真器
  * 注意：这里假设 Simulator 也被包装成了指针
  */

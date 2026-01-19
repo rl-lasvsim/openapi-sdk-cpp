@@ -1,3 +1,4 @@
+#include "lasvsim/ProcessTask_wrapper.h"
 #include "lasvsim/Client_wrapper.h"
 #include "lasvsim/Client.h"
 #include "lasvsim/HttpConfig.h"
@@ -41,6 +42,28 @@ int Lasvsim_Client_IsTaskValid(Lasvsim_Client* client) {
 
 void Lasvsim_Client_Delete(Lasvsim_Client* client) {
     delete client;
+}
+
+// 获取ProcessTask对象
+Lasvsim_ProcessTask* Lasvsim_Client_GetProcessTask(Lasvsim_Client* client) {
+    if (!client || !client->client) {
+        return nullptr;
+    }
+    
+    try {
+        auto& process_task_ref = client->client->GetProcessTask();
+        if (!process_task_ref) {
+            return nullptr;
+        }
+        
+        // 创建ProcessTask包装器
+        Lasvsim_ProcessTask* task_wrapper = Lasvsim_ProcessTask_Create(&process_task_ref);
+        
+        return task_wrapper;
+    } catch (const std::exception& e) {
+        fprintf(stderr, "Failed to get process task: %s\n", e.what());
+        return nullptr;
+    }
 }
 
 }

@@ -16,6 +16,14 @@ typedef struct {
 // ProcessTask 不透明句柄
 typedef struct Lasvsim_ProcessTask Lasvsim_ProcessTask;
 
+// 创建函数
+Lasvsim_ProcessTask* Lasvsim_ProcessTask_Create(void* process_task_ptr);
+
+/**
+ * 销毁实例
+ */
+void Lasvsim_ProcessTask_Delete(Lasvsim_ProcessTask* task);
+
 /**
  * 复制记录
  * @param task 任务句柄

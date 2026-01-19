@@ -6,9 +6,35 @@
 // 内部结构定义（关联 Client Wrapper 中获取的 shared_ptr）
 struct Lasvsim_ProcessTask {
     std::shared_ptr<lasvsim::ProcessTask> obj;
+
+    // 构造函数
+    Lasvsim_ProcessTask(std::shared_ptr<lasvsim::ProcessTask> ptr)
+        : obj(ptr) {}
 };
 
 extern "C" {
+
+Lasvsim_ProcessTask* Lasvsim_ProcessTask_Create(void* process_task_ptr) {
+    if (!process_task_ptr) return nullptr;
+    try {
+        // 关键：将 void* 转换回实际的类型
+        // process_task_ptr 是一个 shared_ptr<ProcessTask>* 指针
+        std::shared_ptr<lasvsim::ProcessTask>* real_ptr = 
+            reinterpret_cast<std::shared_ptr<lasvsim::ProcessTask>*>(process_task_ptr);
+        
+        // 解引用获取 shared_ptr，然后构造对象
+        return new Lasvsim_ProcessTask(*real_ptr);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+// 释放函数
+void Lasvsim_ProcessTask_Delete(Lasvsim_ProcessTask* task) {
+    if (task) {
+        delete task;
+    }
+}
 
 int Lasvsim_ProcessTask_CopyRecord(Lasvsim_ProcessTask* task, int taskId, int recordId, Lasvsim_CopyRecordRes* outRes) {
     if (!task || !task->obj || !outRes) return -1;
