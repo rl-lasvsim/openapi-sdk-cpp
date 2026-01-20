@@ -116,4 +116,50 @@ int Lasvsim_Simulator_GetVehicleIdList(Lasvsim_Simulator* sim,char **outIds)  {
     }
 }
 
+int Lasvsim_Simulator_GetVehicleControlInfo(Lasvsim_Simulator* sim,const char* vehicle_id, Lasvsim_ControlInfo* out_control_info){
+    fprintf(stderr, "IN Lasvsim_Simulator_GetVehicleControlInfo\n");
+    if (!vehicle_id || !out_control_info) {
+        return -1;
+    }
+    
+    try {
+        // 调用原始的C++函数
+        std::string vehicle_id_str(vehicle_id);
+        lasvsim::ControlInfo cpp_result = sim->obj->GetVehicleControlInfo(vehicle_id_str);
+        
+        if (!out_control_info) {
+            printf("[ERROR] out_control_info is NULL!\n");
+            return -1;
+        }
+    
+        // 检查内存是否有效
+        printf("[DEBUG] Checking memory access...\n");
+        printf("[DEBUG] sizeof(ControlInfo_C): %zu\n", sizeof(Lasvsim_ControlInfo));
+
+                // 打印C++结果的值
+        printf("[DEBUG] C++ result values:\n");
+        printf("  fl_torque: %f\n", cpp_result.fl_torque);
+        printf("  fr_torque: %f\n", cpp_result.fr_torque);
+        printf("  lon_acc: %f\n", cpp_result.lon_acc);
+        printf("  rl_torque: %f\n", cpp_result.rl_torque);
+        printf("  rr_torque: %f\n", cpp_result.rr_torque);
+        printf("  ste_wheel: %f\n", cpp_result.ste_wheel);
+        
+        // 将C++结果复制到C结构体
+        out_control_info->fl_torque = cpp_result.fl_torque;
+        out_control_info->fr_torque = cpp_result.fr_torque;
+        out_control_info->lon_acc = cpp_result.lon_acc;
+        out_control_info->rl_torque = cpp_result.rl_torque;
+        out_control_info->rr_torque = cpp_result.rr_torque;
+        out_control_info->ste_wheel = cpp_result.ste_wheel;
+    } catch (const std::exception& e) {
+        fprintf(stderr, "ERROR: Exception caught in Lasvsim_Simulator_GetVehicleControlInfo: %s\n", e.what());
+        return -2; // 失败
+    } catch (...) {
+        fprintf(stderr, "ERROR: Unknown exception caught in Lasvsim_Simulator_GetVehicleControlInfo \n");
+        return -2; // 失败
+    }
+    return 0;
+}
+
 }

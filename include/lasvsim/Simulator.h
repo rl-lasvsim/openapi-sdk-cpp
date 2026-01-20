@@ -166,6 +166,32 @@ namespace lasvsim {
                         const std::vector<std::string>& link_junction_nav) {}
     };
 
+    // 控制信息
+    class ControlInfo {
+        public:
+            double fl_torque; // 左前轮扭矩, 单位:[N*m]
+            double fr_torque; // 右前轮扭矩, 单位:[N*m]
+            double lon_acc;   // 纵向加速度, 单位:[m/s^2]
+            double rl_torque; // 左后轮扭矩, 单位:[N*m]
+            double rr_torque; // 右后轮扭矩, 单位:[N*m]
+            double ste_wheel; // 方向盘转角(逆时针为正),单位:[rad(弧度)]
+        
+        ControlInfo() = default;
+        ControlInfo(double fl_torque,
+                    double fr_torque,
+                    double lon_acc,
+                    double rl_torque,
+                    double rr_torque,
+                    double ste_wheel) {
+                        this->fl_torque = fl_torque;
+                        this->fr_torque = fr_torque;
+                        this->lon_acc = lon_acc;
+                        this->rl_torque = rl_torque;
+                        this->rr_torque = rr_torque;
+                        this->ste_wheel = ste_wheel;
+                    }
+    };
+
     class Simulator {
         public:
             Simulator() = default;
@@ -190,6 +216,8 @@ namespace lasvsim {
             // 修改车辆位置
             void SetVehiclePosition(const std::string& vehicle_id,
                                 const double phi,const Point& Point);
+            // 根据车辆id，获取车辆控制信息
+            ControlInfo GetVehicleControlInfo(const std::string& vehicle_id);
         private:
             std::shared_ptr<HttpClient> client_;
             std::shared_ptr<SimulatorConfig> config_;

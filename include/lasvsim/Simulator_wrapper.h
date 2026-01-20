@@ -42,6 +42,17 @@ typedef struct {
 // 获取车辆id列表 std::vector<std::string> GetVehicleIdList();
 int Lasvsim_Simulator_GetVehicleIdList(Lasvsim_Simulator* sim,char **outIds);
 
+// C语言兼容的结构体
+typedef struct {
+    double fl_torque;  // 左前轮扭矩, 单位:[N*m]
+    double fr_torque;  // 右前轮扭矩, 单位:[N*m]
+    double lon_acc;    // 纵向加速度, 单位:[m/s^2]
+    double rl_torque;  // 左后轮扭矩, 单位:[N*m]
+    double rr_torque;  // 右后轮扭矩, 单位:[N*m]
+    double ste_wheel;  // 方向盘转角(逆时针为正),单位:[rad(弧度)]
+} Lasvsim_ControlInfo;
+
+int Lasvsim_Simulator_GetVehicleControlInfo(Lasvsim_Simulator* sim,const char* vehicle_id, Lasvsim_ControlInfo* out_control_info);
 
 #ifdef __cplusplus
 }

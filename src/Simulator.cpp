@@ -331,4 +331,39 @@ namespace lasvsim {
         }         
                 
     }
+
+    ControlInfo Simulator::GetVehicleControlInfo(const std::string& vehicle_id) {
+        std::string path = "/openapi/cosim/v2/simulation/vehicle/control/get";
+        try
+        {
+            json reqJson;
+            reqJson["simulation_id"] = simulation_id_;
+            reqJson["id_list"] = {vehicle_id};
+            std::string reply =  client_->Post(path, reqJson.dump());
+            json replyJson = json::parse(reply);
+
+            json vehControlJson = replyJson["control_info_dict"][vehicle_id];
+            if (vehControlJson.is_null()) {
+                throw SDKException(-1,"Vehicle not found",NOT_EXIST,path);
+            }
+            fprintf(stderr, "acccc >>> ???%.2f\n", vehControlJson["lon_acc"].get<double>());
+
+            return ControlInfo(
+                vehControlJson.value("fl_torque",0),
+                vehControlJson.value("fr_torque",0),
+                vehControlJson.value("lon_acc",0),
+                vehControlJson.value("rl_torque",0),
+                vehControlJson.value("rr_torque",0),
+                vehControlJson.value("ste_wheel",0)
+            ); 
+        }
+        catch(const SDKException& e)
+        {
+            throw e;
+        }
+        catch(const std::exception& e)
+        {
+            throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
+        }   
+    }
 }
