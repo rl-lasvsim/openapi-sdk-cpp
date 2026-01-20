@@ -346,7 +346,6 @@ namespace lasvsim {
             if (vehControlJson.is_null()) {
                 throw SDKException(-1,"Vehicle not found",NOT_EXIST,path);
             }
-            fprintf(stderr, "acccc >>> ???%.2f\n", vehControlJson["lon_acc"].get<double>());
 
             return ControlInfo(
                 vehControlJson.value("fl_torque",0),
