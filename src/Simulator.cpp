@@ -84,4 +84,32 @@ namespace lasvsim {
             throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
         }
     }
+
+    lasvsim::SetAEBStatusRes Simulator::SetAEBStatus(const std::string& vehicleId,
+                                                      bool emergencyBraking,
+                                                      bool firstCollisionWarning,
+                                                      bool secondCollisionWarning) {
+        std::string path = "/openapi/cosim/v2/simulation/vehicle/aeb_status";
+        try
+        {
+            json reqJson;
+            reqJson["simulation_id"] = simulation_id_;
+            reqJson["vehicle_id"] = vehicleId;
+            reqJson["emergency_braking"] = emergencyBraking;
+            reqJson["first_collision_warning"] = firstCollisionWarning;
+            reqJson["second_collision_warning"] = secondCollisionWarning;
+            
+            client_->Post(path, reqJson.dump());
+            
+            return SetAEBStatusRes();
+        }
+        catch(const SDKException& e)
+        {
+            throw e;
+        }
+        catch(const std::exception& e)
+        {
+            throw SDKException(-1,e.what(),SDK_UNKNOWN,path);
+        }
+    }
 }

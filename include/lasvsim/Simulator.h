@@ -29,6 +29,12 @@ namespace lasvsim {
         StepRes(StepCode code, std::string message) : code(code), message(message) {}
     };
 
+    // AEB 状态响应
+    class SetAEBStatusRes {
+    public:
+        SetAEBStatusRes() = default;
+    };
+
     class Simulator {
     public:
         Simulator(std::shared_ptr<HttpClient> client,
@@ -37,6 +43,16 @@ namespace lasvsim {
 
         void Stop();
         StepRes Step();
+        
+        // 设置车辆 AEB(自动紧急制动) 状态
+        // vehicleId: 车辆 ID
+        // emergencyBraking: 紧急制动状态
+        // firstCollisionWarning: 第一次碰撞预警报警
+        // secondCollisionWarning: 第二次碰撞预警报警
+        SetAEBStatusRes SetAEBStatus(const std::string& vehicleId, 
+                                      bool emergencyBraking, 
+                                      bool firstCollisionWarning, 
+                                      bool secondCollisionWarning);
     private:
         std::shared_ptr<HttpClient> client_;
         std::shared_ptr<SimulatorConfig> config_;
